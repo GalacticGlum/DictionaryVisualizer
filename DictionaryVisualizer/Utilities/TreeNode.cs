@@ -94,6 +94,13 @@ namespace DictionaryVisualizer.Utilities
             }
         }
 
+        public void TraverseUp(Action<TreeNode<T>> operation)
+        {
+            if (Parent == null) return;
+            operation(this);
+            Parent.TraverseUp(operation);
+        }
+
         /// <summary>
         /// Flatten the <see cref="TreeNode{T}"/> and it's children into one collection.
         /// </summary>

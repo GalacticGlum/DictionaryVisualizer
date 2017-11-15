@@ -80,9 +80,14 @@ namespace DictionaryVisualizer.Utilities
         /// The traversal operation works recursively on all nodes.
         /// </summary>
         /// <param name="operation">The operation to execute on each <see cref="TreeNode{T}"/>.</param>
-        public void Traverse(Action<T> operation)
+        /// <param name="runOnThisNode">Indicates whether the traversal operation should run on this node.</param>
+        public void Traverse(Action<TreeNode<T>> operation, bool runOnThisNode = true)
         {
-            operation(Value);
+            if (runOnThisNode)
+            {
+                operation(this);
+            }
+
             foreach (TreeNode<T> child in children)
             {
                 child.Traverse(operation);

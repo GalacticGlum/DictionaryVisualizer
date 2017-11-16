@@ -9,17 +9,17 @@ namespace DictionaryVisualizer.Utilities
 
         public static void DrawTree<T>(TreeNode<T> treeRoot, string filepath)
         {
-            string graphvizCode = "digraph tree\n{";
+            string graphvizCode = "digraph tree\n{\n";
+
             treeRoot.Traverse(node =>
             {
                 // ReSharper disable once AccessToModifiedClosure
-                graphvizCode += $"    \"{node.Parent.Value.ToString()}\" -> \"{node.Value.ToString()}\";\n";
+                graphvizCode += $"{{node_{node.Parent.Id}[label=\"{node.Parent.Value.ToString()}\"]}} -> {{node_{node.Id}[label=\"{node.Value.ToString()}\"]}};\n";
             }, false);
-            graphvizCode += "\n}";
+            graphvizCode += "}";
 
             string dotFilepath = Path.GetFileNameWithoutExtension(filepath) + ".dot";
             File.WriteAllText(dotFilepath, graphvizCode);
-
             Process.Start(GraphvizBinaryLocation, $"-Tpng -o{filepath} {dotFilepath}");
         }
     }

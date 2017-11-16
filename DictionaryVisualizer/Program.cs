@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.Eventing.Reader;
 using DictionaryVisualizer.Utilities;
 
 namespace DictionaryVisualizer
@@ -10,10 +9,14 @@ namespace DictionaryVisualizer
 
         private static void Main(string[] args)
         {
-            AddDefinitionToTree(Console.ReadLine(), rootTreeNode);
-            
-            GraphvizHelper.DrawTree(rootTreeNode, "output_graph.png");
-            Console.WriteLine("Finished graph output.");
+            Console.WriteLine("What is the root word?");
+            string root = Console.ReadLine();
+
+            Console.WriteLine("What is the path of the output file (relative to this executable).");
+            string outputFilepath = Console.ReadLine();
+
+            AddDefinitionToTree(root, rootTreeNode);
+            GraphvizHelper.DrawTree(rootTreeNode, outputFilepath);
         }
 
         private static void AddDefinitionToTree(string word, TreeNode<string> parentNode = null)
@@ -26,11 +29,10 @@ namespace DictionaryVisualizer
             }
             else
             {       
-                Console.WriteLine(word);
                 wordNode = parentNode.AddChild(word);
             }
 
-            if (WordExistsOnPath(wordNode, word))
+            if (wordNode.Parent != null && WordExistsOnPath(wordNode.Parent, word))
             {
                 return;
             }
@@ -44,8 +46,8 @@ namespace DictionaryVisualizer
 
         private static bool WordExistsOnPath(TreeNode<string> wordNode, string word)
         {
-            if (wordNode.Parent == null) return false;
-            return wordNode.Value == word || WordExistsOnPath(wordNode.Parent, word);
+            if (wordNode.Value == word) return true;
+            return wordNode.Parent != null && WordExistsOnPath(wordNode.Parent, word);
         }
     }
 }

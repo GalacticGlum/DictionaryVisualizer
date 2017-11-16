@@ -11,12 +11,19 @@ namespace DictionaryVisualizer.Utilities
     /// <typeparam name="T"></typeparam>
     public sealed class TreeNode<T>
     {
+        private static int idCounter;
+
         /// <summary>
         /// Gets a child <see cref="TreeNode{T}"/> from a zero-based index.
         /// </summary>
         /// <param name="index">The zero-based index of the child node.</param>
         /// <returns>The child node at the specified index.</returns>
         public TreeNode<T> this[int index] => children[index];
+
+        /// <summary>
+        /// The integer identification of this node.
+        /// </summary>
+        public int Id { get; }
 
         /// <summary>
         /// The value of the <see cref="TreeNode{T}"/>.
@@ -46,6 +53,8 @@ namespace DictionaryVisualizer.Utilities
         {
             Value = value;
             children = new List<TreeNode<T>>();
+
+            Id = idCounter++;
         }
 
         /// <summary>
